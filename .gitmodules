@@ -1,0 +1,3 @@
+[submodule "buildpack"]
+	path = buildpack
+	url = https://github.com/heroku/heroku-buildpack-php.git
