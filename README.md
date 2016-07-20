@@ -16,6 +16,8 @@ You can now require the extension in your composer.json.
 
 Here is the list of extensions supported in this repository:
 
+- amqp
+
 ## Maintenance
 
 This repository is maintained by the Incenteev team.
