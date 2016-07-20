@@ -1,0 +1,42 @@
+#!/bin/bash
+# Build Path: /app/.heroku/php/
+
+# fail hard
+set -o pipefail
+# fail harder
+set -eu
+
+util_dir=$(dirname $BASH_SOURCE)/../../../buildpack/support/build/_util/
+
+source ${util_dir}/include/manifest.sh
+
+OUT_PREFIX=$1
+
+dep_formula=${0#$WORKSPACE_DIR/}
+dep_name=$(basename $BASH_SOURCE)
+dep_version=${dep_formula##*"/${dep_name}-"}
+dep_package=pkg-${dep_name}-${dep_version}
+dep_dirname=rabbitmq-c-${dep_version}
+dep_archive_name=v${dep_version}.tar.gz
+dep_url=https://github.com/alanxz/rabbitmq-c/archive/${dep_archive_name}
+dep_manifest=${dep_package}.composer.json
+
+# we need cmake
+apt-get install -y cmake || { echo "Failed to install cmake; this build cannot run in a dyno; are you running this in a Docker build?"; exit 1; }
+
+echo "-----> Building ${dep_package}..."
+
+curl -L ${dep_url} | tar xz
+
+pushd ${dep_dirname}
+cmake -DCMAKE_CXX_FLAGS="-fPIC" -DCMAKE_INSTALL_PREFIX:PATH=${OUT_PREFIX} -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_INSTALL_LIBDIR:PATH=lib .
+make -s -j9
+make install -s
+strip --strip-unneeded ${OUT_PREFIX}/lib/librabbitmq*.so*
+popd
+
+# clean the output
+
+python ${util_dir}/include/manifest.py "heroku-sys-package" "heroku-sys/pkg-${dep_name}" "$dep_version" "${dep_formula}.tar.gz" > $dep_manifest
+
+print_or_export_manifest_cmd "$(generate_manifest_cmd "$dep_manifest")"
