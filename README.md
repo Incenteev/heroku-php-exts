@@ -7,7 +7,7 @@ This repo maintains additional PHP extensions for the official [PHP Heroku build
 To use extensions provided by this repository, you only need to register it in your Heroku app:
 
 ```bash
-$ heroku config:set HEROKU_PHP_PLATFORM_REPOSITORIES="https://incenteev-heroku-php-exts.s3.amazonaws.com/dist-cedar-14-stable/packages.json"
+$ heroku config:set HEROKU_PHP_PLATFORM_REPOSITORIES="https://incenteev-heroku-php-exts.s3.amazonaws.com/dist-cedar-14-stable"
 ```
 
 You can now require the extension in your composer.json.
