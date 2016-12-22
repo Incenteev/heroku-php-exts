@@ -17,6 +17,7 @@ You can now require the extension in your composer.json.
 Here is the list of extensions supported in this repository:
 
 - amqp
+- sundown (only for PHP 5.x)
 
 ## Maintenance
 
