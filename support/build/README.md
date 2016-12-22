@@ -18,6 +18,12 @@ Then, you need to build the Docker environment. This must run from the root of t
 $ docker build --tag heroku-php-exts-cedar-14 --file $(pwd)/buildpack/support/build/_docker/cedar-14.Dockerfile .
 ```
 
+or for the heroku-16 stack:
+
+```bash
+$ docker build --tag heroku-php-exts-heroku-16 --file $(pwd)/buildpack/support/build/_docker/heroku-16.Dockerfile .
+```
+
 **You will need to rebuild the image after each change to the formulae.** It will be fast thanks to the Docker layer cache.
 
 You can then use the image to run your build environment. We provide an `env.default` file with the default config for the image. You will still need to provide the AWS credentials.
